@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // Importar useNavigate
+import { useNavigate } from "react-router-dom";  
 
 import "../src/App.css";
 
 function Registro() {
-  const navigate = useNavigate(); // Definir navigate aquí
+  const navigate = useNavigate(); 
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -94,6 +94,9 @@ function Registro() {
           ))}
         </select>
         <button type="submit">Registrarme</button>
+        <button type="button" onClick={() => navigate("/")}>
+          Volver
+        </button>
       </form>
       <p id="message">{message}</p>
     </div>

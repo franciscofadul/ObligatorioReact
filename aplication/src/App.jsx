@@ -22,6 +22,7 @@ function App() {
         if (data.codigo === 200) {
           setMessage("Inicio de sesión exitoso");
           localStorage.setItem("apiKey", data.apiKey);
+          console.log("API Key:", data.apiKey);
         } else {
           setMessage("Error en las credenciales");
         }
@@ -55,6 +56,7 @@ function App() {
         <button type="button" onClick={() => navigate("/registro")}>
           Registrarme
         </button>
+        
       </form>
       <p id="message">{message}</p>
     </div>
