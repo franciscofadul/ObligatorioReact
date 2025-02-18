@@ -1,13 +1,16 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import App from "./App";
+
 import Registro from "../registro/registrarse";
+import Login from "../login/login";
+import CargarActividad from "../Actividad/actividad";
 
 function AppRouter() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<App />} />
+        <Route path="/" element={<Login />} />
         <Route path="/registro" element={<Registro />} />
+        <Route path="/home" element = {<CargarActividad/>}/>
       </Routes>
     </Router>
   );
