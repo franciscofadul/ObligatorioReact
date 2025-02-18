@@ -50,7 +50,8 @@ function App() {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button type="submit">Iniciar</button>
+        {username && password && <button type="submit">Iniciar</button>}
+        <p>¿No tienes cuenta?</p>
         <button type="button" onClick={() => navigate("/registro")}>
           Registrarme
         </button>
