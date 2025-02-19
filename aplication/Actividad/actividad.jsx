@@ -108,6 +108,9 @@ function CargarActividad() {
 
         <button type="submit">Cargar Actividad</button>
       </form>
+      <button type="button" onClick={() => navigate("/registros")}>
+        Ver mis registros
+      </button>
       <p id="message">{message}</p>
     </div>
   );
