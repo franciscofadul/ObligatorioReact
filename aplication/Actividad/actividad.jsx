@@ -65,6 +65,7 @@ const CargarActividad = () => {
           setActividadSeleccionada("");
           setFecha("");
           setDuracion("");
+          window.location.reload();
         } else {
           setMessage("Error al cargar la actividad");
         }

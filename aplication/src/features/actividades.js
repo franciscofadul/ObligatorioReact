@@ -11,8 +11,16 @@ export const actividadesSlice = createSlice({
     ListaTipoActividades: (state, action) => {
       state.lista = action.payload;
     },
+    AgregarActividad: (state, action) => {
+      state.lista.push(action.payload);
+    },
+    EliminarActividad: (state, action) => {
+      state.lista = state.lista.filter(
+        (actividad) => actividad.id !== action.payload
+      );
+    },
   },
 });
 
-export const { ListaTipoActividades } = actividadesSlice.actions;
+export const { ListaTipoActividades,AgregarActividad,EliminarActividad } = actividadesSlice.actions;
 export default actividadesSlice.reducer;

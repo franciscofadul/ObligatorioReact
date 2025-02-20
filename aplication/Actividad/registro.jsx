@@ -110,7 +110,7 @@ const VerRegistros = () => {
           </thead>
           <tbody>
             {registrosFiltrados.map((registro) => {
-               const actividad = actividades2.find(
+              const actividad = actividades2.find(
                 (act) => act.id === registro.idActividad
               );
               return (
@@ -118,18 +118,19 @@ const VerRegistros = () => {
                   <td>{`Actividad ${registro.idActividad}`}</td>
                   <td>{registro.fecha}</td>
                   <td>{registro.tiempo} minutos</td>
-                  {actividad && actividad.imagen && (
+                  <td>
+                    {actividad && actividad.imagen && (
                       <img
                         src={`https://movetrack.develotion.com/imgs/${actividad.imagen}.png`}
                         alt="Actividad"
-                        style={{ width: "30px", marginLeft: "10px" }}
+                        style={{ width: "40px", marginLeft: "10px", borderWidth: "1px", borderStyle: "solid", borderColor: " #ff5733" }}
                       />
                     )}
+                  </td>
                   <td>
                     <button onClick={() => handleDelete(registro.id)}>
                       Eliminar
                     </button>
-                   
                   </td>
                 </tr>
               );

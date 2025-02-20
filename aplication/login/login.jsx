@@ -25,6 +25,7 @@ const Login = () => {
           console.log(data.id);
           localStorage.setItem("userid", data.id);
           console.log(data);
+          navigate("/home")
         } else {
           setMessage("Error en las credenciales");
         }
@@ -54,7 +55,7 @@ const Login = () => {
           required
         />
         {username && password &&
-         <button type="submit" onClick={() => navigate("/home")} > Iniciar</button>}
+         <button type="submit" > Iniciar</button>}
         <p>¿No tienes cuenta?</p>
         <button type="button" onClick={() => navigate("/registro")}>
           Registrarme
