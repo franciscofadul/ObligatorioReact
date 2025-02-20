@@ -1,8 +1,8 @@
-import CargarActividad from "../Actividad/actividad";
-import VerRegistros from "../Actividad/registro";
-import TiempoDiario from "../Actividad/tiempoDiario";
-import TiempoTotal from "../Actividad/tiempoTotal";
-import Header from "../Header/Header";
+import CargarActividad from "../src/components/Actividad/actividad";
+import VerRegistros from "../src/components/Actividad/registro";
+import TiempoDiario from "../src/components/Actividad/tiempoDiario";
+import TiempoTotal from "../src/components/Actividad/tiempoTotal";
+import Header from "../src/components/Header/Header";
 
 const App = () => {
   return (

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "../src/App.css";
+import "../../App.css";
+
 import { useSelector } from "react-redux";
 
 const VerRegistros = () => {

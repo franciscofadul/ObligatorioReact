@@ -1,12 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";  
 
-import Registro from "../registro/registrarse";
-import Login from "../login/login";
-import CargarActividad from "../Actividad/actividad";
-import VerRegistros from "../Actividad/registro";
-import TiempoTotal from "../Actividad/tiempoTotal";
-import TiempoDiario from "../Actividad/tiempoDiario";
+import Registro from "../src/components/registro/registrarse";
+import Login from "../src/components/login/login";
+import CargarActividad from "../src/components/Actividad/actividad";
+import VerRegistros from "../src/components/registro/registrarse";
+import TiempoTotal from "../src/components/Actividad/tiempoTotal";
+import TiempoDiario from "../src/components/Actividad/tiempoDiario";
 import App from "./App";
 import { store } from "./store/store";
 

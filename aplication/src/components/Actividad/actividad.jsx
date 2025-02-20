@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { ListaTipoActividades } from "../src/features/actividades";
-import "../src/App.css";
+import { ListaTipoActividades } from "../../features/actividades";
+import "../../App.css";
 
 const CargarActividad = () => {
   const [actividadSeleccionada, setActividadSeleccionada] = useState("");

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import "../src/App.css";
+import "../../App.css";
+
 
 const TiempoDiario = () => {
   const [tiempoDiario, setTiempoDiario] = useState(0);

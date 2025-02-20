@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";  
-
-import "../src/App.css";
+import "../../App.css";
 
 const Registro = () => {
   const navigate = useNavigate(); 
