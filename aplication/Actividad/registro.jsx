@@ -1,30 +1,28 @@
-
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../src/App.css";
+import { useSelector } from "react-redux";
 
-function VerRegistros() {
+const VerRegistros = () => {
   const [registros, setRegistros] = useState([]);
   const [actividades, setActividades] = useState([]);
   const [message, setMessage] = useState("");
-  const [filtroFecha, setFiltroFecha] = useState("todos"); 
+  const [filtroFecha, setFiltroFecha] = useState("todos");
   const navigate = useNavigate();
+  const actividades2 = useSelector((state) => state.actividades.lista);
 
- 
   const filtrarRegistros = (registros, filtro) => {
     const hoy = new Date();
     let fechaLimite;
 
     if (filtro === "semana") {
       fechaLimite = new Date();
-      fechaLimite.setDate(hoy.getDate() - 7); 
+      fechaLimite.setDate(hoy.getDate() - 7);
     } else if (filtro === "mes") {
       fechaLimite = new Date();
-      fechaLimite.setMonth(hoy.getMonth() - 1); 
+      fechaLimite.setMonth(hoy.getMonth() - 1);
     }
 
-   
     return registros.filter((registro) => {
       const fechaRegistro = new Date(registro.fecha);
       return filtro === "todos" || fechaRegistro >= fechaLimite;
@@ -32,35 +30,23 @@ function VerRegistros() {
   };
 
   useEffect(() => {
-    fetch("https://movetrack.develotion.com/actividades.php", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "apikey": localStorage.getItem("apiKey"),
-        "iduser": localStorage.getItem("userid"),
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.codigo === 200) {
-          setActividades(data.actividades);
-        }
-      })
-      .catch((error) => {
-        console.error("Error al cargar las actividades:", error);
-        setMessage("Error al cargar las actividades.");
-      });
-  }, []);
+    console.log("Actividades desde el store:", actividades2);
+  }, [actividades2]);
 
   useEffect(() => {
-    fetch(`https://movetrack.develotion.com/registros.php?idUsuario=${localStorage.getItem("userid")}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "apikey": localStorage.getItem("apiKey"),
-        "iduser": localStorage.getItem("userid"),
-      },
-    })
+    fetch(
+      `https://movetrack.develotion.com/registros.php?idUsuario=${localStorage.getItem(
+        "userid"
+      )}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          apikey: localStorage.getItem("apiKey"),
+          iduser: localStorage.getItem("userid"),
+        },
+      }
+    )
       .then((response) => response.json())
       .then((data) => {
         console.log("Datos de registro", data);
@@ -76,18 +62,20 @@ function VerRegistros() {
       });
   }, []);
 
-  
   const registrosFiltrados = filtrarRegistros(registros, filtroFecha);
 
   const handleDelete = (idRegistro) => {
-    fetch(`https://movetrack.develotion.com/registros.php?idRegistro=${idRegistro}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        "apikey": localStorage.getItem("apiKey"),
-        "iduser": localStorage.getItem("userid"),
-      },
-    })
+    fetch(
+      `https://movetrack.develotion.com/registros.php?idRegistro=${idRegistro}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          apikey: localStorage.getItem("apiKey"),
+          iduser: localStorage.getItem("userid"),
+        },
+      }
+    )
       .then((response) => response.json())
       .then((data) => {
         if (data.codigo === 200) {
@@ -122,13 +110,26 @@ function VerRegistros() {
           </thead>
           <tbody>
             {registrosFiltrados.map((registro) => {
+               const actividad = actividades2.find(
+                (act) => act.id === registro.idActividad
+              );
               return (
                 <tr key={registro.id}>
                   <td>{`Actividad ${registro.idActividad}`}</td>
                   <td>{registro.fecha}</td>
                   <td>{registro.tiempo} minutos</td>
+                  {actividad && actividad.imagen && (
+                      <img
+                        src={`https://movetrack.develotion.com/imgs/${actividad.imagen}.png`}
+                        alt="Actividad"
+                        style={{ width: "30px", marginLeft: "10px" }}
+                      />
+                    )}
                   <td>
-                    <button onClick={() => handleDelete(registro.id)}>Eliminar</button>
+                    <button onClick={() => handleDelete(registro.id)}>
+                      Eliminar
+                    </button>
+                   
                   </td>
                 </tr>
               );
@@ -139,7 +140,6 @@ function VerRegistros() {
         <p>No tienes registros de actividad para el filtro seleccionado.</p>
       )}
 
-      
       <div>
         <label htmlFor="filtroFecha">Filtrar por fecha: </label>
         <select
@@ -158,43 +158,6 @@ function VerRegistros() {
       </button>
     </div>
   );
-}
+};
 
 export default VerRegistros;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

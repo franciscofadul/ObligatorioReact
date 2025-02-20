@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import "../src/App.css";
 
-function Registro() {
+const Registro = () => {
   const navigate = useNavigate(); 
 
   const [username, setUsername] = useState("");

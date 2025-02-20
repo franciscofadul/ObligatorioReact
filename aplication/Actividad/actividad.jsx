@@ -1,54 +1,55 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { ListaTipoActividades } from "../src/features/actividades";
 import "../src/App.css";
 
-function CargarActividad() {
-  const [actividades, setActividades] = useState([]);
+const CargarActividad = () => {
   const [actividadSeleccionada, setActividadSeleccionada] = useState("");
   const [fecha, setFecha] = useState("");
   const [duracion, setDuracion] = useState("");
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  // Cargar las actividades desde la API
+  // Obtener actividades del store
+  const actividades = useSelector((state) => state.actividades.lista);
 
   useEffect(() => {
-    console.log("hola " + localStorage.getItem("apiKey"));
-    console.log(localStorage.getItem("userid"));
-    fetch("https://movetrack.develotion.com/actividades.php", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-            "apikey": localStorage.getItem("apiKey"), 
-            "iduser": localStorage.getItem("userid"), 
-        },
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.codigo === 200) {
-            setActividades(data.actividades);
-          } 
-        })
-        .catch((error) => {
-          console.error("Error al conectar con el servidor:", error);
-          setMessage("Error al conectar con el servidor");
-        });}, []);
-
+    const fetchActividades = async () => {
+      try {
+        const response = await fetch("https://movetrack.develotion.com/actividades.php", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "apikey": localStorage.getItem("apiKey"),
+            "iduser": localStorage.getItem("userid"),
+          },
+        });
+  
+        const data = await response.json();
+        if (data.codigo === 200) {
+          dispatch(ListaTipoActividades(data.actividades));
+          console.log("Actividades cargadas:", data.actividades);  // Verifica si las actividades llegan correctamente
+        }
+      } catch (error) {
+        console.error("Error al conectar con el servidor:", error);
+        setMessage("Error al conectar con el servidor");
+      }
+    };
+  
+    fetchActividades();
+  }, [dispatch]);
+  
   const handleSubmit = (e) => {
     e.preventDefault();
-    const apiKey = localStorage.getItem("apiKey");
-
-    if (!apiKey) {
-      setMessage("Error: No tienes una sesión activa.");
-      return;
-    }
 
     fetch("https://movetrack.develotion.com/registros.php", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "apikey": localStorage.getItem("apiKey"), 
-        "iduser": localStorage.getItem("userid"),  
+        "apikey": localStorage.getItem("apiKey"),
+        "iduser": localStorage.getItem("userid"),
       },
       body: JSON.stringify({
         idActividad: actividadSeleccionada,
@@ -75,7 +76,6 @@ function CargarActividad() {
     <div className="container">
       <h2>Cargar Actividad Física</h2>
       <form onSubmit={handleSubmit}>
-        {/* Select para elegir actividad */}
         <select
           value={actividadSeleccionada}
           onChange={(e) => setActividadSeleccionada(e.target.value)}
@@ -89,15 +89,8 @@ function CargarActividad() {
           ))}
         </select>
 
-        {/* Input para la fecha */}
-        <input
-          type="date"
-          value={fecha}
-          onChange={(e) => setFecha(e.target.value)}
-          required
-        />
+        <input type="date" value={fecha} onChange={(e) => setFecha(e.target.value)} required />
 
-        {/* Input para la duración */}
         <input
           type="number"
           placeholder="Duración en minutos"
@@ -114,6 +107,6 @@ function CargarActividad() {
       <p id="message">{message}</p>
     </div>
   );
-}
+};
 
 export default CargarActividad;

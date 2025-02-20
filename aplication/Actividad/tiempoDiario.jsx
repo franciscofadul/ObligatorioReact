@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import "../src/App.css";
 
-function TiempoDiario() {
+const TiempoDiario = () => {
   const [tiempoDiario, setTiempoDiario] = useState(0);
 
   useEffect(() => {
