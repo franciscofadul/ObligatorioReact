@@ -11,14 +11,7 @@ export const registrosSlice = createSlice({
     ListaRegistros: (state, action) => {
       state.lista = action.payload;
     },
-    // AgregarRegistro: (state, action) => {
-    //   state.lista.push(action.payload);
-    // },
-    // EliminarRegistro: (state, action) => {
-    //   state.lista = state.lista.filter(
-    //     (registro) => registro.id !== action.payload
-    //   );
-    // },
+
   },
 });
 

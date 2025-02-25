@@ -10,7 +10,7 @@ const Header = () => {
     };
     return (
         <header className="header">
-            <img src="../img/logoHeader.png" alt="Logo" className="logo-header" />
+            <img src="/assets/img/logoHeader.png" alt="Logo" className="logo-header" />
             <h1></h1>
             <button className="logout-button" onClick={handleLogout}>Cerrar sesión</button>
         </header>

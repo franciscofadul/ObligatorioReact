@@ -71,7 +71,8 @@ const Registro = () => {
   return (
     <div className="container">
       <div className="inicioSesion">
-        <img src="img/fondochico.jpg" alt="Logo de Fitness" className="logo" />
+      <img src="/assets/img/fondochico.jpg" alt="Logo de Fitness" className="logo" />
+
         <h2>Registro de Usuario</h2>
       </div>
       <form onSubmit={registroUsuario}>

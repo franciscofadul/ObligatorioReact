@@ -2,10 +2,10 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";  
 import "react-toastify/dist/ReactToastify.css";
 
-import Registro from "../src/components/registro/registrarse";
+
 import Login from "../src/components/login/login";
 import CargarActividad from "../src/components/Actividad/actividad";
-import VerRegistros from "../src/components/registro/registrarse";
+import VerRegistros from "../src/components/Actividad/registro";
 import TiempoTotal from "../src/components/Actividad/tiempoTotal";
 import TiempoDiario from "../src/components/Actividad/tiempoDiario";
 import App from "./App";
@@ -14,6 +14,8 @@ import { ToastContainer } from "react-toastify";
 import GraficoSesiones from "./components/Actividad/graficoSesiones";
 import GraficoMinutos from "./components/Actividad/graficoMinutos";
 import EvolucionPersonal from "./components/Actividad/evolucionPersonal";
+import Registro from "./components/registro/registrarse";
+
 
 const AppRouter = () => {
   return (
