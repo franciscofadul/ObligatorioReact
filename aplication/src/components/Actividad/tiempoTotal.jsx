@@ -17,7 +17,7 @@ const TiempoTotal = () => {
       .then((response) => response.json())
       .then((data) => {
         if (data.codigo === 200) {
-          // Calcular el tiempo total
+         
           const total = data.registros.reduce((sum, registro) => sum + parseInt(registro.tiempo), 0);
           setTiempoTotal(total);
         }

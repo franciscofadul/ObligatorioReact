@@ -1,16 +1,17 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import "../../App.css";
 
-import { useSelector } from "react-redux";
+import { ListaRegistros } from "../../features/registros";
 
-const VerRegistros = () => {
-  const [registros, setRegistros] = useState([]);
-  const [actividades, setActividades] = useState([]);
+const VerRegistros = ({ scrollToCargarActividad }) => {
+  const registros = useSelector((state) => state.registros.lista);
+  const actividades2 = useSelector((state) => state.actividades.lista);
   const [message, setMessage] = useState("");
   const [filtroFecha, setFiltroFecha] = useState("todos");
   const navigate = useNavigate();
-  const actividades2 = useSelector((state) => state.actividades.lista);
+  const dispatch = useDispatch();
 
   const filtrarRegistros = (registros, filtro) => {
     const hoy = new Date();
@@ -36,9 +37,7 @@ const VerRegistros = () => {
 
   useEffect(() => {
     fetch(
-      `https://movetrack.develotion.com/registros.php?idUsuario=${localStorage.getItem(
-        "userid"
-      )}`,
+      `https://movetrack.develotion.com/registros.php?idUsuario=${localStorage.getItem("userid")}`,
       {
         method: "GET",
         headers: {
@@ -52,7 +51,7 @@ const VerRegistros = () => {
       .then((data) => {
         console.log("Datos de registro", data);
         if (data.codigo === 200) {
-          setRegistros(data.registros);
+          dispatch(ListaRegistros(data.registros));
         } else {
           setMessage("No se encontraron registros de actividad.");
         }
@@ -61,7 +60,7 @@ const VerRegistros = () => {
         console.error("Error al conectar con el servidor:", error);
         setMessage("Error al conectar con el servidor.");
       });
-  }, []);
+  }, [dispatch]); 
 
   const registrosFiltrados = filtrarRegistros(registros, filtroFecha);
 
@@ -80,9 +79,7 @@ const VerRegistros = () => {
       .then((response) => response.json())
       .then((data) => {
         if (data.codigo === 200) {
-          setRegistros((prevRegistros) =>
-            prevRegistros.filter((registro) => registro.id !== idRegistro)
-          );
+          dispatch(ListaRegistros(registros.filter((registro) => registro.id !== idRegistro)));
           setMessage("Registro eliminado exitosamente");
         } else {
           setMessage("Error al eliminar el registro");
@@ -111,16 +108,14 @@ const VerRegistros = () => {
           </thead>
           <tbody>
             {registrosFiltrados.map((registro) => {
-              const actividad = actividades2.find(
-                (act) => act.id === registro.idActividad
-              );
+              const actividad = actividades2.find((act) => act.id === registro.idActividad);
               return (
                 <tr key={registro.id}>
-                  <td>{`Actividad ${registro.idActividad}`}</td>
+                  <td>{actividad?.nombre || "Actividad desconocida"}</td>
                   <td>{registro.fecha}</td>
                   <td>{registro.tiempo} minutos</td>
                   <td>
-                    {actividad && actividad.imagen && (
+                    {actividad?.imagen && (
                       <img
                         src={`https://movetrack.develotion.com/imgs/${actividad.imagen}.png`}
                         alt="Actividad"
@@ -129,9 +124,7 @@ const VerRegistros = () => {
                     )}
                   </td>
                   <td>
-                    <button onClick={() => handleDelete(registro.id)}>
-                      Eliminar
-                    </button>
+                    <button onClick={() => handleDelete(registro.id)}>Eliminar</button>
                   </td>
                 </tr>
               );
@@ -144,18 +137,14 @@ const VerRegistros = () => {
 
       <div>
         <label htmlFor="filtroFecha">Filtrar por fecha: </label>
-        <select
-          id="filtroFecha"
-          value={filtroFecha}
-          onChange={(e) => setFiltroFecha(e.target.value)}
-        >
+        <select id="filtroFecha" value={filtroFecha} onChange={(e) => setFiltroFecha(e.target.value)}>
           <option value="todos">Todo el histórico</option>
           <option value="semana">Última semana</option>
           <option value="mes">Último mes</option>
         </select>
       </div>
 
-      <button type="button" onClick={() => navigate("/home")}>
+      <button type="button" onClick={scrollToCargarActividad}>
         Cargar Nueva Actividad
       </button>
     </div>

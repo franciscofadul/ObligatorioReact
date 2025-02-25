@@ -19,7 +19,7 @@ const TiempoDiario = () => {
       .then((response) => response.json())
       .then((data) => {
         if (data.codigo === 200) {
-          
+          console.log("Registros:", data.registros);
           const totalHoy = data.registros.reduce((sum, registro) => {
             if (registro.fecha.split('T')[0] === hoy) {
               return sum + parseInt(registro.tiempo);

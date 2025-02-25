@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";  
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";  
 import "../../App.css";
 
 const Registro = () => {
@@ -50,14 +52,17 @@ const Registro = () => {
       .then((response) => response.json())
       .then((data) => {
         if (data.codigo === 200) {
+          toast.success("Usuario registrado correctamente");
           setMessage("Usuario registrado correctamente");
           setApiKey(data.apiKey);
           navigate("/"); 
         } else {
+          toast.error(data.mensaje);
           setMessage(data.mensaje); 
         }
       })
       .catch((error) => {
+        toast.error(data.mensaje);
         console.error("Error al conectar con el servidor:", error);
         setMessage("Error al conectar con el servidor");
       });
@@ -92,7 +97,9 @@ const Registro = () => {
             </option>
           ))}
         </select>
-        <button type="submit">Registrarme</button>
+        {username && password && paisSeleccionado && (
+          <button type="submit">Registrarme</button>
+        )}
         <button type="button" onClick={() => navigate("/")}>
           Volver
         </button>

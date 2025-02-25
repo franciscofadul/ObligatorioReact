@@ -3,8 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { ListaTipoActividades } from "../../features/actividades";
 import "../../App.css";
+import { ListaRegistros } from "../../features/registros";
 
-const CargarActividad = () => {
+
+const CargarActividad = ({ scrollToVerRegistros }) => {
   const [actividadSeleccionada, setActividadSeleccionada] = useState("");
   const [fecha, setFecha] = useState("");
   const [duracion, setDuracion] = useState("");
@@ -12,7 +14,6 @@ const CargarActividad = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // Obtener actividades del store
   const actividades = useSelector((state) => state.actividades.lista);
 
   useEffect(() => {
@@ -30,7 +31,7 @@ const CargarActividad = () => {
         const data = await response.json();
         if (data.codigo === 200) {
           dispatch(ListaTipoActividades(data.actividades));
-          console.log("Actividades cargadas:", data.actividades);  // Verifica si las actividades llegan correctamente
+          console.log("Actividades cargadas:", data.actividades); 
         }
       } catch (error) {
         console.error("Error al conectar con el servidor:", error);
@@ -43,7 +44,7 @@ const CargarActividad = () => {
   
   const handleSubmit = (e) => {
     e.preventDefault();
-
+  
     fetch("https://movetrack.develotion.com/registros.php", {
       method: "POST",
       headers: {
@@ -62,10 +63,27 @@ const CargarActividad = () => {
       .then((data) => {
         if (data.codigo === 200) {
           setMessage("Actividad cargada exitosamente");
+          console.log ("Fecha" + fecha);
           setActividadSeleccionada("");
           setFecha("");
           setDuracion("");
-          window.location.reload();
+          fetch(
+            `https://movetrack.develotion.com/registros.php?idUsuario=${localStorage.getItem("userid")}`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                apikey: localStorage.getItem("apiKey"),
+                iduser: localStorage.getItem("userid"),
+              },
+            }
+          )
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.codigo === 200) {
+                dispatch(ListaRegistros(data.registros)); 
+              }
+            });
         } else {
           setMessage("Error al cargar la actividad");
         }
@@ -90,7 +108,7 @@ const CargarActividad = () => {
           ))}
         </select>
 
-        <input type="date" value={fecha} onChange={(e) => setFecha(e.target.value)} required />
+        <input type="date" value={fecha} onChange={(e) => setFecha(e.target.value)} max={new Date().toISOString().split("T")[0]} required />
 
         <input
           type="number"
@@ -102,7 +120,7 @@ const CargarActividad = () => {
 
         <button type="submit">Cargar Actividad</button>
       </form>
-      <button type="button" onClick={() => navigate("/registros")}>
+      <button type="button" onClick={scrollToVerRegistros}>
         Ver mis registros
       </button>
       <p id="message">{message}</p>

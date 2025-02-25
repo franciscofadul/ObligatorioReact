@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "../../App.css";
-
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
-  const navigate = useNavigate(); // Hook para navegar
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -21,17 +21,16 @@ const Login = () => {
       .then((response) => response.json())
       .then((data) => {
         if (data.codigo === 200) {
-          setMessage("Inicio de sesión exitoso");
+          toast.success(data.mensaje);
           localStorage.setItem("apiKey", data.apiKey);
-          console.log(data.id);
           localStorage.setItem("userid", data.id);
-          console.log(data);
-          navigate("/home")
+          navigate("/home");
         } else {
-          setMessage("Error en las credenciales");
+          toast.error(data.mensaje);
+          console.log(data.mensaje);
         }
       })
-      .catch(() => setMessage("Error al conectar con el servidor"));
+      .catch(() => toast.error("Error al conectar con el servidor"));
   };
 
   return (
@@ -55,17 +54,14 @@ const Login = () => {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        {username && password &&
-         <button type="submit" > Iniciar</button>}
+        {username && password && <button type="submit">Iniciar</button>}
         <p>¿No tienes cuenta?</p>
         <button type="button" onClick={() => navigate("/registro")}>
           Registrarme
         </button>
-        
       </form>
-      <p id="message">{message}</p>
     </div>
   );
-}
+};
 
 export default Login;
